@@ -30,6 +30,8 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -59,6 +61,15 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
         ],
       },
     },
+    {
+      loader: require.resolve('less-loader'),
+      options: {
+        modules: false,
+        modifyVars: {
+          "@primary-color": "#f9c700"
+        }
+      }
+    }
   ];
   if (preProcessor) {
     loaders.push(require.resolve(preProcessor));
@@ -222,6 +233,10 @@ module.exports = {
                     },
                   },
                 ],
+                ['import', {
+                  libraryName: 'antd',
+                  style:true
+                }],
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -303,6 +318,11 @@ module.exports = {
               },
               'sass-loader'
             ),
+          },
+          {
+            test: lessRegex,
+            exclude: lessModuleRegex,
+            use: getStyleLoaders({ importLoaders: 3 }),
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
