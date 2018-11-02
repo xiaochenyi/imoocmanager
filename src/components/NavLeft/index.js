@@ -3,9 +3,17 @@ import './index.less'
 import { Menu } from 'antd'
 import MenuConfig from '../../config/menuConfig'
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {switchMenu} from '../../redux/action'
+
 const SubMenu = Menu.SubMenu
 
-export default class NavLeft extends React.Component{
+class NavLeft extends React.Component{
+  handleClick = ()=>{
+    const { dispath } = this.props;
+    dispath(switchMenu())
+  }
+
   componentWillMount() {
     var menuTreeNode = this.renderMenu(MenuConfig);
 
@@ -41,3 +49,5 @@ export default class NavLeft extends React.Component{
     );
   }
 }
+
+export default connect()(NavLeft);

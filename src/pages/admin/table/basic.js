@@ -1,9 +1,13 @@
 import React from 'react'
 import { Card, Table, Modal, Button, message } from 'antd'
 import axios from '../../../axios'
+import Utils from "../../../utils/utils";
 
 export default class BasicTable extends React.Component{
   state={}
+  params = {
+    page:1
+  }
   componentDidMount() {
     const dataSource = [
       {
@@ -52,7 +56,7 @@ export default class BasicTable extends React.Component{
 
     this.setState({dataSource})
 
-    // this.request();
+    this.request();
   }
 
   request = ()=>{
@@ -60,20 +64,24 @@ export default class BasicTable extends React.Component{
       url:'/table/list1',
       data: {
         params: {
-          page:1
+          page:this.params.page
         }
       }
     }).then((res)=>{
       if(res.code === 0) {
-        res.result.map((item, index)=>{
+        res.result.list.map((item, index)=>{
           item.key = index;
           return item
         })
 
         this.setState({
-          dataSource2: res.result,
+          dataSource2: res.result.list,
           selectedRowKeys:[],
-          selectedIds:[]
+          selectedIds:[],
+          pagination:Utils.pagination(res, (current)=>{
+            this.params.page = current;
+            this.request();
+          })
         })
       }
     })
@@ -222,6 +230,14 @@ export default class BasicTable extends React.Component{
             dataSource={this.state.dataSource}
             columns={columns}
             pagination={false}
+          />
+        </Card>
+        <Card title="Mock-分页表格" style={{margin:'10px 0'}}>
+          <Table
+            bordered
+            dataSource={this.state.dataSource2}
+            columns={columns}
+            pagination={this.state.pagination}
           />
         </Card>
       </div>

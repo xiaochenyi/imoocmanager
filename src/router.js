@@ -5,6 +5,7 @@ import Login from './pages/login'
 import Admin from './admin'
 import Detail from './pages/detail'
 
+import Home from './pages/home'
 import Buttons from './pages/admin/ui/buttons'
 import Modals from './pages/admin/ui/modals'
 import Loadings from './pages/admin/ui/loadings'
@@ -14,9 +15,14 @@ import Tabs from './pages/admin/ui/tabs'
 import Gallery from './pages/admin/ui/gallery'
 
 import NoMatch from './pages/nomatch'
+import FormLogin from "./pages/admin/form/login";
 import FormRegisiter from "./pages/admin/form/register";
 import BasicTable from "./pages/admin/table/basic";
 import City from "./pages/admin/city";
+import PermissionUser from "./pages/admin/permission";
+import HighTable from "./pages/admin/table/high";
+import Order from "./pages/admin/order";
+import Common from "./common"
 
 export default class IRouter extends React.Component{
   render() {
@@ -28,22 +34,32 @@ export default class IRouter extends React.Component{
               <Route path="/admin" render={()=>(
                 <Admin>
                   <Switch>
+                    <Route path="/admin/home" component={Home}/>
                     <Route path="/admin/ui/buttons" component={Buttons}/>
                     <Route path="/admin/ui/modals" component={Modals}/>
                     <Route path="/admin/ui/loading" component={Loadings}/>
                     <Route path="/admin/ui/notification" component={Notification}/>
                     <Route path="/admin/ui/message" component={Message}/>
                     <Route path="/admin/ui/tabs" component={Tabs}/>
+                    <Route path="/admin/form/login" component={FormLogin}/>
                     <Route path="/admin/form/reg" component={FormRegisiter}/>
                     <Route path="/admin/table/basic" component={BasicTable}/>
+                    <Route path="/admin/table/high" component={HighTable}/>
 
                     <Route path="/admin/ui/gallery" component={Gallery}/>
                     <Route path="/admin/city" component={City}/>
+                    <Route path="/admin/order" component={Order}/>
+
+                    <Route path="/admin/permission" component={PermissionUser}/>
                     <Route component={NoMatch}/>
                   </Switch>
                 </Admin>
               )}/>
-              <Route path="/order/detail" component={Detail}/>
+              <Route path="/common" render={()=>
+                <Common>
+                  <Route path="/common/order/detail/:orderId" component={Loadings}/>
+                </Common>
+              }/>
           </App>
         </HashRouter>
 

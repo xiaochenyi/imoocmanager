@@ -5,7 +5,7 @@ export default class Home extends React.Component{
   render() {
     return (
       <div className="home-wrap">
-        哈那地方克赖斯基罚款脸上的肌肤来说肯定就发牢骚的会计法是
+        欢迎来到我的管理后台练习基地
       </div>
     );
   }

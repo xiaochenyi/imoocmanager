@@ -33,6 +33,7 @@ export default class Header extends React.Component{
   }
 
   render() {
+    const menuType = this.props.menuType;
     return (
       <div className="header">
         <Row className="header-top">
@@ -41,7 +42,8 @@ export default class Header extends React.Component{
             <a href="/to">退出</a>
           </Col>
         </Row>
-        <Row className="breadcrumb">
+
+        {menuType ? '' : <Row className="breadcrumb">
           <Col span="4" className="breadcrumb-title">首页</Col>
           <Col span="20" className="weather">
             <span className="date">{ this.state.sysTime }</span>
@@ -52,7 +54,7 @@ export default class Header extends React.Component{
               {this.state.weather}
             </span>
           </Col>
-        </Row>
+        </Row>}
       </div>
     );
   }

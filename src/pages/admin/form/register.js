@@ -36,7 +36,12 @@ class FormRegisiter extends React.Component{
 
   handleSubmit=()=>{
     let userInfo = this.props.form.getFieldsValue();
-    console.log(userInfo)
+    this.props.form.validateFields((err, values)=>{
+      if(err){
+        console.log(values)
+      }
+    })
+
   }
 
   render() {
@@ -188,11 +193,11 @@ class FormRegisiter extends React.Component{
             <FormItem label="测试上传列表" {...formItemLayout}>
               {
                 getFieldDecorator('listImg',{
-                  initialValue: fileList,
+                  initialValue: fileList
                 })(
                   <div>
                     <Upload
-                      multiple={true}
+                      mode="multiple"
                       listType="picture-card"
                       action="http://172.16.100.110:3001/videotest/add"
                       fileList={fileList}
