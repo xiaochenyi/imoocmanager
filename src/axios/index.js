@@ -1,8 +1,34 @@
 import JsonP from 'jsonp'
 import axios from 'axios'
 import {Modal} from 'antd'
+import Utils from "../utils/utils";
 
 export default class Axios{
+  static requestList(_this,url,params,isMock) {
+    var data = {
+      params
+    }
+    this.ajax({
+      url,
+      data,
+      isMock
+    }).then((res)=>{
+      if(res && res.result) {
+        let list = res.result.item_list.map((item, index)=>{
+          item.key = index;
+          return item;
+        })
+        _this.setState({
+          list,
+          pagination:Utils.pagination(res, (current)=>{
+            _this.params.page = current;
+            _this.requestList();
+          })
+        })
+      }
+    })
+  }
+
   static jsonp(options) {
     return new Promise((resolve, reject)=>{
       JsonP(options.url,{
@@ -23,8 +49,13 @@ export default class Axios{
       loading = document.getElementById('ajaxLoading');
       loading.style.display = "block";
     }
-    // let baseApi = 'https://www.easy-mock.com/mock/5a7278e28d0c633b9c4adbd7/api';
-    let baseApi = 'https://www.easy-mock.com/mock/5bd15b6e7f2aec4f84b04f95/mockapi';
+
+    let baseApi = '';
+    if(options.isMock) {
+      baseApi = 'https://www.easy-mock.com/mock/5bd15b6e7f2aec4f84b04f95/mockapi';
+    } else {
+      baseApi = '正式服务端的接口';
+    }
     return new Promise((resolve, reject)=>{
       axios({
         url:options.url,

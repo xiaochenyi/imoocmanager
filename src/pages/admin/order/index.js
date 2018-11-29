@@ -2,6 +2,8 @@ import React from 'react'
 import { Card, Button, Table, Form, DatePicker, Select, Modal } from 'antd'
 import axios from '../../../axios'
 import Utils from '../../../utils/utils'
+import BaseForm from '../../../components/BaseForm'
+import ETable from "../../../components/ETable";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -14,6 +16,29 @@ export default class Order extends React.Component{
   params = {
     page:1
   }
+  formList = [
+    {
+      type:'SELECT',
+      label:'城市',
+      field:'city',
+      placeholder:'全部',
+      initialValue:'1',
+      width:80,
+      list:[{id:'0', name:'全部'},{id:'1', name:'北京'},{id:'2', name:'深圳'},{id:'3', name:'上海'}]
+    },
+    {
+      type: '时间查询'
+    },
+    {
+      type:'SELECT',
+      label:'订单状态',
+      field:'status',
+      placeholder:'全部',
+      initialValue:'1',
+      width:80,
+      list:[{id:'0', name:'全部'},{id:'1', name:'进行中'},{id:'2', name:'结束行程'}]
+    }
+  ];
   onRowClick = (record, index) => {
     let selectKey = [index];
     this.setState({
@@ -49,27 +74,12 @@ export default class Order extends React.Component{
   componentDidMount() {
     this.requestList()
   }
+  handleFilter = (params)=>{
+    this.params = params;
+    this.requestList();
+  }
   requestList=()=>{
-    axios.ajax({
-      url:'/order/list',
-      data:{
-        params: {
-          page:this.params.page
-        }
-      }
-    }).then((res)=>{
-      let list = res.result.item_list.map((item, index)=>{
-        item.key = index;
-        return item;
-      })
-      this.setState({
-        list,
-        pagination:Utils.pagination(res, (current)=>{
-          this.params.page = current;
-          this.requestList();
-        })
-      })
-    })
+    axios.requestList(this,'/order/list', this.params, true);
   }
   render() {
     const columns = [
@@ -125,7 +135,7 @@ export default class Order extends React.Component{
     return (
       <div>
         <Card>
-          <FilterForm/>
+          <BaseForm formList={this.formList} filterSubmit={this.handleFilter}/>
         </Card>
 
         <Card style={{marginTop:10}}>

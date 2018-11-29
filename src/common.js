@@ -6,7 +6,7 @@ import './style/common.less'
 export default class Common extends React.Component {
   render() {
     return (
-      <div>
+      <div className="container">
         <Row className="simple-page">
           <Header menuType="second"/>
         </Row>

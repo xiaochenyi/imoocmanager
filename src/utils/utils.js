@@ -1,3 +1,6 @@
+import React from 'react'
+import {Select} from 'antd'
+const Option = Select.Option;
 export default {
   /**
    * 格式化 年月日时分秒
@@ -24,5 +27,35 @@ export default {
       showQuickJumper: true
     }
     return page;
-  }
+  },
+  /**
+   * select的options
+   */
+  getOptionList(data) {
+    if(!data) return [];
+    let options = [];
+    data.map((item)=>{
+      options.push(<Option value={item.id} key={item.id}>{item.name}</Option>)
+    })
+    return options;
+  },
+  /**
+   * ETable 行点击通用函数
+   * @param {*选中行的索引} selectedRowKeys
+   * @param {*选中行对象} selectedItem
+   */
+  updateSelectedItem(selectedRowKeys, selectedRows, selectedIds) {
+    if (selectedIds) {
+      this.setState({
+        selectedRowKeys,
+        selectedIds: selectedIds,
+        selectedItem: selectedRows
+      })
+    } else {
+      this.setState({
+        selectedRowKeys,
+        selectedItem: selectedRows
+      })
+    }
+  },
 }

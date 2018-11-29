@@ -37,7 +37,14 @@ export default class Header extends React.Component{
     return (
       <div className="header">
         <Row className="header-top">
-          <Col span="24">
+          {
+            menuType ?
+              <Col span="6" className="logo">
+                <img src="/assets/logo-ant.svg" alt=""/>
+                <span>IMooc 通用管理系统</span>
+              </Col> : ''
+          }
+          <Col span={menuType ? '18' : '24'}>
             <span>欢迎，{ this.state.username }</span>
             <a href="/to">退出</a>
           </Col>
